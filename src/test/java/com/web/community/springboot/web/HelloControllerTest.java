@@ -8,15 +8,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = HelloController.class)
+@WebMvcTest(controllers = {HelloController.class})
 public class HelloControllerTest {
     @Autowired
     private MockMvc mvc;
@@ -31,14 +30,14 @@ public class HelloControllerTest {
     }
 
     @Test
-    public void lombok_test() throws Exception {
+    public void return_dto() throws Exception {
         String name = "test";
         int amount = 1000;
 
         mvc.perform(
-                        get("/hello/dto")
-                                .param("name", name)
-                                .param("amount", String.valueOf(amount)))
+                get("/hello/dto")
+                        .param("name", name)
+                        .param("amount", String.valueOf(amount)))
                 .andExpect(status().isOk())
                 .andExpect((ResultMatcher) jsonPath("$.name", is(name)))
                 .andExpect((ResultMatcher) jsonPath("$.amount", is(amount)));
