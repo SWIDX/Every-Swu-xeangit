@@ -1,4 +1,4 @@
-package com.web.community.springboot.web.domain;
+package com.web.community.springboot.web.domain.posts;
 
 import com.web.community.springboot.domain.posts.Posts;
 import com.web.community.springboot.domain.posts.PostsRepository;
