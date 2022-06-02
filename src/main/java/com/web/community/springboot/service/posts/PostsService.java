@@ -15,11 +15,22 @@ import javax.transaction.Transactional;
 public class PostsService {
     private final PostsRepository postsRepository;
 
+
+    //create
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {
         return postsRepository.save(requestDto.toEntity()).getId();
     }
 
+    //read
+    public PostsResponseDto findById(Long id){
+        Posts entity = postsRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 게시글이 없습니다. id="+id));
+
+        return new PostsResponseDto(entity);
+    }
+
+
+    //update
     @Transactional
     public Long update(Long id, PostsUpdateRequestDto requestDto) {
         Posts posts = postsRepository.findById(id)
@@ -29,9 +40,10 @@ public class PostsService {
 
         return id;
     }
-    public PostsResponseDto findById(Long id){
-    Posts entity = postsRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 게시글이 없습니다. id="+id));
 
-    return new PostsResponseDto(entity);
+    //delete
+    @Transactional
+    public void delete(Long id){
+        postsRepository.deleteById(id);
     }
 }
